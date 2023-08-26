@@ -211,7 +211,7 @@ require('lazy').setup({
   --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {})
 
 -- [[ Setting options ]]
@@ -599,10 +599,10 @@ vim.keymap.set('n', '<leader>to', ':SymbolsOutline<CR>', { desc = '[t]oggle outl
 -- require("nvim-dap-virtual-text").setup()
 --
 -- -- run file as a script depending on file type
--- vim.cmd [[
---   augroup filetype_keymap
---     autocmd!
---     autocmd FileType python nmap <leader>x :w<CR>:exec "!python3" shellescape(expand(@%, 1))<CR>
---     autocmd FileType javascript nmap <leader>x :w<CR>:exec "!node" shellescape(expand(@%, 1))<CR>
---   augroup END
--- ]]
+vim.cmd [[
+  augroup filetype_keymap
+    autocmd!
+    autocmd FileType python nmap <leader>x :w<CR>:exec "!python3" shellescape(expand(@%, 1))<CR>
+    autocmd FileType javascript nmap <leader>x :w<CR>:exec "!node" shellescape(expand(@%, 1))<CR>
+  augroup END
+]]
