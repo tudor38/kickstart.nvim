@@ -437,11 +437,11 @@ end
 --  define the property 'filetypes' to the map in question.
 local servers = {
   -- clangd = {},
-  -- gopls = {},
-  -- pyright = {},
-  -- rust_analyzer = {},
-  -- tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+  gopls = {},
+  pyright = {},
+  rust_analyzer = {},
+  tsserver = {},
+  html = { filetypes = { 'html', 'twig', 'hbs' } },
 
   lua_ls = {
     Lua = {
@@ -558,16 +558,12 @@ vim.keymap.set('n', '<leader>w', ':w<CR>', { noremap = true, silent = true, desc
 
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
 
--- navigate quickfix list
-vim.keymap.set('n', '<M-j>', ':cnext<CR>', { noremap = true, silent = true, desc = 'quickfix next item' })
-vim.keymap.set('n', '<M-k>', ':cprevious<CR>', { noremap = true, silent = true, desc = 'quickfix previous item' })
+-- -- navigate quickfix list
+-- vim.keymap.set('n', '<M-j>', ':cnext<CR>', { noremap = true, silent = true, desc = 'quickfix next item' })
+-- vim.keymap.set('n', '<M-k>', ':cprevious<CR>', { noremap = true, silent = true, desc = 'quickfix previous item' })
 
 vim.keymap.set('n', '<leader>cp', ':let @"=expand("%:p")<CR>',
   { noremap = true, silent = true, desc = 'copy current buffer absolute path' })
-
--- toggle outline
-vim.keymap.set('n', '<leader>to', ':SymbolsOutline<CR>', { desc = '[t]oggle outline' })
-
 -- nvim-telescope/telescope-dap.nvim
 -- require('telescope').load_extension('dap')
 -- vim.keymap.set('n', '<leader>ds', ':Telescope dap frames<CR>', { noremap = true, silent = true, desc = 'Debug Frames' })
@@ -595,14 +591,3 @@ vim.keymap.set('n', '<leader>to', ':SymbolsOutline<CR>', { desc = '[t]oggle outl
 -- vim.keymap.set('n', '<leader>dj', ':lua require"dap".down()<CR>zz')
 -- vim.keymap.set('n', '<leader>dr', ':lua require"dap".repl.toggle({}, "vsplit")<CR><C-w>l')
 -- vim.keymap.set('n', '<leader>du', ':lua require"dapui".toggle()<CR>')
---
--- require("nvim-dap-virtual-text").setup()
---
--- -- run file as a script depending on file type
-vim.cmd [[
-  augroup filetype_keymap
-    autocmd!
-    autocmd FileType python nmap <leader>x :w<CR>:exec "!python3" shellescape(expand(@%, 1))<CR>
-    autocmd FileType javascript nmap <leader>x :w<CR>:exec "!node" shellescape(expand(@%, 1))<CR>
-  augroup END
-]]
