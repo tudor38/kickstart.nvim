@@ -13,5 +13,4 @@ return {
 	'tpope/vim-obsession',
 	'qpkorr/vim-renamer'
 	-- 'ggandor/leap.nvim',
-	-- 'simrat39/symbols-outline.nvim',
 }
