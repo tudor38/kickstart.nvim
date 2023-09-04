@@ -80,10 +80,10 @@ return {
 
     vim.keymap.set({ 'n', 'v' }, '<Leader>di', function()
       require('dap.ui.widgets').hover()
-    end)
+    end, { desc = 'DAPUI: Hover' })
     vim.keymap.set({ 'n', 'v' }, '<Leader>dp', function()
       require('dap.ui.widgets').preview()
-    end)
+    end, { desc = 'DAPUI: Preview' })
     vim.keymap.set('n', '<Leader>df', function()
       local widgets = require('dap.ui.widgets')
       widgets.centered_float(widgets.frames)
@@ -93,6 +93,13 @@ return {
       widgets.centered_float(widgets.scopes)
     end)
 
+    -- REPL Autocompletion
+    vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+      pattern = { "dap-repl" },
+      callback = function()
+        require('dap.ext.autocompl').attach()
+      end,
+    })
     -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
     vim.keymap.set('n', '<F7>', dapui.toggle, { desc = 'Debug: See last session result.' })
 
