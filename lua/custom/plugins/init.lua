@@ -12,4 +12,5 @@ return {
 	'tpope/vim-surround',
 	'tpope/vim-obsession',
 	'qpkorr/vim-renamer',
+	'Mofiqul/dracula.nvim',
 }
