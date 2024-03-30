@@ -2,6 +2,6 @@
 return {
 	'David-Kunz/gen.nvim',
 	config = function()
-		require("gen").model = 'orca2:13b'
+		require("gen").model = 'mistral:latest'
 	end,
 }
