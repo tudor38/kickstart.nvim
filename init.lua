@@ -68,8 +68,8 @@ require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
-  'tpope/vim-fugitive',
-  'tpope/vim-rhubarb',
+  -- 'tpope/vim-fugitive',
+  -- 'tpope/vim-rhubarb',
 
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
@@ -155,14 +155,14 @@ require('lazy').setup({
     },
   },
 
---   {
---     -- Add indentation guides even on blank lines
---     'lukas-reineke/indent-blankline.nvim',
---     -- Enable `lukas-reineke/indent-blankline.nvim`
---     -- See `:help indent_blankline.txt`
---     main = "ibl",
---     opts = {},
---   },
+  --   {
+  --     -- Add indentation guides even on blank lines
+  --     'lukas-reineke/indent-blankline.nvim',
+  --     -- Enable `lukas-reineke/indent-blankline.nvim`
+  --     -- See `:help indent_blankline.txt`
+  --     main = "ibl",
+  --     opts = {},
+  --   },
 
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
