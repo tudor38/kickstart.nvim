@@ -563,3 +563,7 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 
 vim.keymap.set('n', '<leader>cp', ':let @"=expand("%:p")<CR>',
   { noremap = true, silent = true, desc = 'copy current buffer absolute path' })
+
+-- see files
+vim.keymap.set('n', '<leader>n', ':lua MiniFiles.open()<CR>',
+  { noremap = true, silent = true, desc = 'Open File Explorer' })
