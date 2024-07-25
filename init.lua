@@ -567,3 +567,7 @@ vim.keymap.set('n', '<leader>cp', ':let @"=expand("%:p")<CR>',
 -- see files
 vim.keymap.set('n', '<leader>n', ':lua MiniFiles.open()<CR>',
   { noremap = true, silent = true, desc = 'Open File Explorer' })
+
+local python = '$HOME/.pyenv/versions/neovim/bin/python'
+vim.g.python_host_prog = python
+vim.g.python3_host_prog = python

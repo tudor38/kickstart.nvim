@@ -25,6 +25,23 @@ return {
   },
   config = function()
     local dap = require 'dap'
+    dap.adapters.python = {
+      type = 'executable',
+      command = os.getenv('HOME') .. '/.pyenv/versions/neovim/bin/python/',
+      args = { '-m', 'debugpy.adapter' },
+    }
+
+    -- dap.configurations.python = {
+    --   {
+    --     type = 'python',
+    --     request = 'launch',
+    --     name = "Launch file",
+    --     program = "${file}",
+    --     pythonPath = function()
+    --       return '/usr/bin/python'
+    --     end,
+    --   },
+    -- }
     local dapui = require 'dapui'
 
     require('mason-nvim-dap').setup {
@@ -40,8 +57,9 @@ return {
       -- online, please don't ask me how to install them :)
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
-        'delve',
+        'delve', 'python', 'go'
       },
+      automatic_installation = true,
     }
 
     -- Basic debugging keymaps, feel free to change to your liking!
@@ -110,5 +128,9 @@ return {
 
     -- Install golang specific config
     require('dap-go').setup()
+
+    -- Install python specific config
+    require('dap-python').setup('$HOME/.pyenv/versions/neovim/bin/python')
+    require('dap-python').test_runner = 'pytest'
   end,
 }
