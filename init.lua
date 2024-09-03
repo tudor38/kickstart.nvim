@@ -90,7 +90,7 @@ require('lazy').setup({
       { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
-      -- 'folke/neodev.nvim',
+      -- 'folke/neodev.nvim', -- end-of-life, replaced by lazydev
     },
   },
 

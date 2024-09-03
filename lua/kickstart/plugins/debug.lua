@@ -24,25 +24,8 @@ return {
     'mfussenegger/nvim-dap-python',
   },
   config = function()
-    local dap = require 'dap'
-    dap.adapters.python = {
-      type = 'executable',
-      command = os.getenv('HOME') .. '/.pyenv/versions/neovim/bin/python/',
-      args = { '-m', 'debugpy.adapter' },
-    }
-
-    -- dap.configurations.python = {
-    --   {
-    --     type = 'python',
-    --     request = 'launch',
-    --     name = "Launch file",
-    --     program = "${file}",
-    --     pythonPath = function()
-    --       return '/usr/bin/python'
-    --     end,
-    --   },
-    -- }
-    local dapui = require 'dapui'
+    local dap = require('dap') -- launch debug adapter
+    local dapui = require('dapui')
 
     require('mason-nvim-dap').setup {
       -- Makes a best effort to setup the various debuggers with
@@ -71,6 +54,7 @@ return {
     vim.keymap.set('n', '<leader>dn', dap.run_to_cursor, { desc = 'Debug: Run to Cursor' })
     vim.keymap.set('n', '<leader>dh', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
     vim.keymap.set('n', '<leader>dR', dap.clear_breakpoints, { desc = 'Debug: Clear Breakpoints' })
+    -- vim.keymap.set('n', '<Leader>dr', function() require('dap').repl.open() end, { desc = 'Debug: open REPL' })
     vim.keymap.set('n', '<leader>dH', function()
       dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
     end, { desc = 'Debug: Set Breakpoint' })
