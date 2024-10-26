@@ -114,7 +114,7 @@ return {
     require('dap-go').setup()
 
     -- Install python specific config
-    require('dap-python').setup('$HOME/.pyenv/versions/neovim/bin/python')
+    -- require('dap-python').setup('$HOME/.pyenv/versions/neovim/bin/python')
     require('dap-python').test_runner = 'pytest'
   end,
 }
