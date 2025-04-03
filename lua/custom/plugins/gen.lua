@@ -2,6 +2,6 @@
 return {
 	'David-Kunz/gen.nvim',
 	config = function()
-		require("gen").model = 'mixtral'
+		require("gen").model = 'deepseek-r1:14b'
 	end,
 }

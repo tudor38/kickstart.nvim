@@ -5,5 +5,6 @@ return {
 		require('mini.align').setup()
 		require('mini.files').setup()
 		require('mini.cursorword').setup()
+		-- require('mini.diff').setup()
 	end
 }
