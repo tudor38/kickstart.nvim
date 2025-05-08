@@ -8,9 +8,9 @@ vim.cmd [[
 ]]
 
 return {
-	'tpope/vim-repeat',
-	'tpope/vim-surround',
-	'tpope/vim-obsession',
-	'qpkorr/vim-renamer',
-	'Mofiqul/dracula.nvim',
+  --   'tpope/vim-repeat',
+  --   -- 'tpope/vim-surround',
+  --   'tpope/vim-obsession',
+  --   'qpkorr/vim-renamer',
+  --   'Mofiqul/dracula.nvim',
 }

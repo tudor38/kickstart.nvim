@@ -86,7 +86,7 @@ return {
   { -- paste an image from the clipboard or drag-and-drop
     'HakonHarnes/img-clip.nvim',
     event = 'BufEnter',
-    ft = { 'markdown', 'quarto', 'latex' },
+    ft = { 'markdown', 'quarto' },
     opts = {
       default = {
         dir_path = 'img',
@@ -131,7 +131,7 @@ return {
       vim.g.molten_auto_open_output = false
     end,
     keys = {
-      { '<leader>mi', ':MoltenInit<cr>',           desc = '[m]olten [i]nit' },
+      { '<leader>mi', ':MoltenInit<cr>', desc = '[m]olten [i]nit' },
       {
         '<leader>mv',
         ':<C-u>MoltenEvaluateVisual<cr>',

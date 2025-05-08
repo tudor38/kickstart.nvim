@@ -296,7 +296,7 @@ require('lazy').setup({
     opts = {
       -- delay between pressing a key and opening which-key (milliseconds)
       -- this setting is independent of vim.opt.timeoutlen
-      delay = 0,
+      delay = 1000,
       icons = {
         -- set icon mappings to true if you have a Nerd Font
         mappings = vim.g.have_nerd_font,
@@ -718,7 +718,7 @@ require('lazy').setup({
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+        ensure_installed = {}, -- explicitly set to an empty table (Kickstart poplates installs via mason-tool-installer)
         automatic_installation = false,
         handlers = {
           function(server_name)
@@ -1034,6 +1034,7 @@ require('lazy').setup({
 -- vim: ts=2 sts=2 sw=2 et
 
 -- my custom
+require('render-markdown').setup { latex = { enabled = false } }
 vim.opt.relativenumber = true
 vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
