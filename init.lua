@@ -954,6 +954,8 @@ require('lazy').setup({
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
       require('mini.files').setup()
+      require('mini.pairs').setup()
+      require('mini.jump2d').setup()
     end,
   },
   { -- Highlight, edit, and navigate code
