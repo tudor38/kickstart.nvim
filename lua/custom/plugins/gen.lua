@@ -2,6 +2,6 @@
 return {
   'David-Kunz/gen.nvim',
   config = function()
-    require('gen').model = 'mistral-nemo:latest'
+    require('gen').model = 'gemma3n'
   end,
 }
