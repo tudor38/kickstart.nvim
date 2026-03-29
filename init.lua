@@ -955,6 +955,7 @@ require('lazy').setup({
       --  Check out: https://github.com/echasnovski/mini.nvim
       require('mini.files').setup()
       require('mini.pairs').setup()
+      require('mini.comment').setup { mappings = { comment = 'gcc', comment_line = 'gcc', textobject = '' } }
       -- require('mini.jump2d').setup()
     end,
   },
@@ -1054,7 +1055,7 @@ vim.keymap.set('i', 'jk', '<Esc>', { noremap = true, silent = true })
 vim.keymap.set('n', '<leader>o', ':only<CR>', { desc = 'show [O]nly this buffer' })
 
 -- highlight
-vim.keymap.set('n', '<leader>h', ':set hlsearch!<CR>', { desc = 'toggle search highlight' })
+vim.keymap.set('n', '<leader>hl', ':set hlsearch!<CR>', { desc = 'toggle search highlight' })
 -- send regex to new window
 vim.keymap.set(
   'n',
