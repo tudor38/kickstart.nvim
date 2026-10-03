@@ -156,3 +156,5 @@ require('mason-lspconfig').setup {
   ensure_installed = {},
   automatic_enable = vim.tbl_keys(servers),
 }
+
+return { tools = tools } -- for scripts/sync.lua

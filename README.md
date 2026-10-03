@@ -7,6 +7,8 @@ uses blink.cmp for completion, and targets **Neovim 0.12**.
 
 ## Requirements
 
+`install.sh` installs these (see [Install](#install)); listed for reference.
+
 - Neovim 0.12
 - [tree-sitter CLI](https://github.com/tree-sitter/tree-sitter) 0.26.1+ (nvim-treesitter `main` builds parsers with it)
 - `git`, `make`, a C compiler (treesitter parsers, telescope-fzf-native, LuaSnip regex support)
@@ -18,14 +20,36 @@ uses blink.cmp for completion, and targets **Neovim 0.12**.
 
 ## Install
 
+On a new Linux machine (apt, dnf, pacman or zypper), one command installs everything:
+
 ```sh
-git clone git@github.com:tudor38/kickstart.nvim.git ~/.config/nvim
-nvim  # vim.pack asks to install plugins (at the revisions in nvim-pack-lock.json); mason installs servers and formatters
+curl -fsSL https://raw.githubusercontent.com/tudor38/kickstart.nvim/master/install.sh | bash
 ```
+
+`install.sh` installs the distro packages (git, make, gcc, ripgrep, fd, Python, Node when missing) with `sudo`.
+It puts Neovim 0.12, tree-sitter CLI, lazygit and Go into `~/.local` (`bin/`, `opt/`, `go/`) when missing
+or too old, and adds the JetBrainsMono Nerd Font. Then it clones this repo to `~/.config/nvim`, over https
+with an SSH push URL. Last, it runs `scripts/sync.lua` headlessly to install the plugins (at the
+`nvim-pack-lock.json` revisions), the treesitter parsers and the mason servers, tools and debug adapters. If
+anything is missing at the end, it exits non-zero. An existing non-matching `~/.config/nvim` is moved to
+`~/.config/nvim.bak-<date>`. It never edits shell rc files; it prints the `PATH` line to add when one is needed.
+
+Extras are opt-in: `--with-latex` (latex2text via uv), `--with-ollama`, `--with-quarto`, or `--all`
+(`curl … | bash -s -- --all`).
+
+### Keeping machines in sync
+
+The script is safe to re-run: on an existing checkout it runs `git pull --ff-only` and syncs. After
+`:PackUpdate` on one machine, commit `nvim-pack-lock.json`. On the others, run `~/.config/nvim/install.sh`
+(or just `nvim --headless -l ~/.config/nvim/scripts/sync.lua` after pulling).
+To move the plugins already installed to the lockfile revisions, use
+`:lua vim.pack.update(nil, { target = 'lockfile' })`. Mason package versions aren't pinned.
 
 ## Layout
 
 ```
+install.sh               new-machine setup (deps, clone, sync)
+scripts/sync.lua         headless install of plugins, parsers, mason tools
 init.lua                 leader keys, then requires the config modules
 lua/config/
   options.lua            editor options

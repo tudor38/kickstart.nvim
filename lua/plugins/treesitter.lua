@@ -66,3 +66,5 @@ vim.keymap.set('n', '<leader>tc', function()
     end
   end
 end, { desc = '[T]oggle syntax [C]olors' })
+
+return { parsers = parsers } -- for scripts/sync.lua
