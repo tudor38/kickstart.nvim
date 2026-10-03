@@ -20,7 +20,7 @@ map('n', '<leader>vv', '<cmd>edit $MYVIMRC | cd %:h<CR>', { desc = 'Edit [V]im c
 map('n', '<leader>yp', '<cmd>let @" = expand("%:p")<CR>', { desc = '[Y]ank file [P]ath' })
 
 -- Misc
-map('n', '<leader>ti', [[:put =strftime('%Y-%m-%d %H:%M:%S')<CR>A ]], { desc = '[T]ime [I]nsert' })
+map('n', '<leader>it', [[:put =strftime('%Y-%m-%d %H:%M:%S')<CR>A ]], { desc = '[I]nsert [T]imestamp' })
 map('n', '<F3>', [[:redir @a<CR>:g//<CR>:redir END<CR>:vnew<CR>:put! a<CR>:set hlsearch<CR>]], {
   desc = 'Show last search matches in a new window',
   silent = true,

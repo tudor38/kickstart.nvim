@@ -42,7 +42,7 @@ return {
     },
     config = function(_, opts)
       require('img-clip').setup(opts)
-      vim.keymap.set('n', '<leader>ii', ':PasteImage<cr>', { desc = 'insert [i]mage from clipboard' })
+      vim.keymap.set('n', '<leader>ii', ':PasteImage<cr>', { desc = '[I]nsert [I]mage from clipboard' })
     end,
   },
 
