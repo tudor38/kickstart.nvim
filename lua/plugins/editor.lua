@@ -58,7 +58,11 @@ return {
     'echasnovski/mini.nvim',
     config = function()
       -- Better around/inside textobjects, e.g. va), yinq, ci'
-      require('mini.ai').setup { n_lines = 500 }
+      require('mini.ai').setup {
+        -- Keep an/in free for Neovim 0.12's built-in incremental selection (`:help treesitter-incremental-selection`)
+        mappings = { around_next = 'aa', inside_next = 'ii' },
+        n_lines = 500,
+      }
       -- Add/delete/replace surroundings, e.g. saiw), sd', sr)'
       require('mini.surround').setup()
 

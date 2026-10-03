@@ -2,14 +2,15 @@
 
 My personal Neovim configuration. It started as a fork of
 [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) and has since diverged: it is split into
-modules, keeps [lazy.nvim](https://github.com/folke/lazy.nvim) and nvim-cmp, and targets **Neovim 0.11**.
+modules, keeps [lazy.nvim](https://github.com/folke/lazy.nvim) and nvim-cmp, and targets **Neovim 0.12**.
 
 Upstream kickstart has since moved to Neovim 0.12's built-in `vim.pack` and blink.cmp; migrating is
 tracked in [#1](https://github.com/tudor38/kickstart.nvim/issues/1).
 
 ## Requirements
 
-- Neovim 0.11
+- Neovim 0.12
+- [tree-sitter CLI](https://github.com/tree-sitter/tree-sitter) 0.26.1+ (nvim-treesitter `main` builds parsers with it)
 - `git`, `make`, a C compiler (treesitter parsers, telescope-fzf-native, LuaSnip regex support)
 - [ripgrep](https://github.com/BurntSushi/ripgrep) for Telescope grep pickers
 - A [Nerd Font](https://www.nerdfonts.com/) (`vim.g.have_nerd_font` in `init.lua`)
@@ -98,5 +99,6 @@ Leader is `<Space>`. Press it and wait to see which-key's menu; `<leader>sk` sea
 | `jk`                | Escape (insert mode)                                                 |
 | `<F3>`              | Show last search's matches in a new window                           |
 
-Text editing comes from mini.nvim: `sa`/`sd`/`sr` surround, extended `a`/`i` textobjects, autopairs.
+Text editing comes from mini.nvim: `sa`/`sd`/`sr` surround, extended `a`/`i` textobjects (`aa`/`ii` for
+"next"; `an`/`in` stay Neovim's treesitter incremental selection), autopairs.
 Comments use Neovim's built-in `gc`/`gcc`.
