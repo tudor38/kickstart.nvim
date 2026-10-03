@@ -14,8 +14,7 @@ uses blink.cmp for completion, and targets **Neovim 0.12**.
 - A [Nerd Font](https://www.nerdfonts.com/) (`vim.g.have_nerd_font` in `init.lua`)
 - Language toolchains for the servers you use: Node (ts_ls, prettier), Python (basedpyright, ruff), Go (gopls, gofmt)
 - Optional: [lazygit](https://github.com/jesseduffield/lazygit), [Ollama](https://ollama.com/) (gen.nvim),
-  [Quarto](https://quarto.org/), and [kitty](https://sw.kovidgoyal.net/kitty/) (mdmath equation images,
-  kitty-scrollback)
+  [Quarto](https://quarto.org/), and `latex2text` for math in Markdown (`uv tool install pylatexenc`)
 
 ## Install
 
@@ -41,10 +40,10 @@ lua/plugins/
   format.lua             conform.nvim (format on save)
   git.lua                gitsigns, lazygit
   lsp.lua                language servers via mason + lspconfig, diagnostics
-  markdown.lua           render-markdown, mdmath
+  markdown.lua           render-markdown (incl. LaTeX as Unicode)
   quarto.lua             quarto-nvim + otter, img-clip, nabla
   telescope.lua          fuzzy finder pickers
-  tools.lua              gen.nvim, emmet, kitty-scrollback
+  tools.lua              gen.nvim, emmet (web filetypes, <C-z> prefix)
   treesitter.lua         parsers, highlighting, indent
 ```
 
@@ -63,7 +62,7 @@ the matching module (or a new module listed in `init.lua`). Plugins are installe
 | `:PackClean`            | Delete plugins that were removed from the config                      |
 | `:checkhealth vim.pack` | Plugin manager status                                                 |
 
-Build steps (telescope-fzf-native, LuaSnip regex, mdmath's npm install, `:TSUpdate`) run on install/update
+Build steps (telescope-fzf-native, LuaSnip regex, `:TSUpdate`) run on install/update
 from `lua/config/pack.lua`. To roll back an update: `git checkout HEAD -- nvim-pack-lock.json`, `:restart`,
 then `:lua vim.pack.update(nil, { offline = true, target = 'lockfile' })`.
 

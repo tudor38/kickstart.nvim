@@ -61,6 +61,13 @@ require('which-key').setup {
 require('todo-comments').setup { signs = false }
 
 -- Small independent modules
+-- File icons for everything (statusline, render-markdown, which-key); also stands in for
+-- nvim-web-devicons so Telescope gets icons without a second icon plugin
+if vim.g.have_nerd_font then
+  require('mini.icons').setup()
+  MiniIcons.mock_nvim_web_devicons()
+end
+
 -- Better around/inside textobjects, e.g. va), yinq, ci'
 require('mini.ai').setup {
   -- Keep an/in free for Neovim 0.12's built-in incremental selection (`:help treesitter-incremental-selection`)

@@ -18,7 +18,7 @@ M.modules = {
     'treesitter',
     'markdown', -- these react to the first buffer's FileType
     'quarto',
-    'tools', -- kitty-scrollback must be loaded when kitty launches nvim
+    'tools',
   },
   deferred = { 'telescope', 'debug' }, -- nothing needed until a key is pressed
 }
@@ -49,9 +49,6 @@ local builds = {
   end,
   LuaSnip = function(path)
     run('LuaSnip', { 'make', 'install_jsregexp' }, path) -- regex support in snippets
-  end,
-  ['mdmath.nvim'] = function(path)
-    run('mdmath.nvim', { 'npm', 'install' }, path .. '/mdmath-js')
   end,
   ['nvim-treesitter'] = function(_, active)
     if not active then

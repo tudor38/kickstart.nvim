@@ -6,6 +6,7 @@ local gh = require('config.pack').gh
 local parsers = {
   'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc',
   'python', 'go', 'gomod', 'gosum', 'javascript', 'typescript', 'tsx', 'css', 'json', 'yaml', 'toml',
+  'latex', -- math in markdown (render-markdown)
 }
 
 local function attach(buf, language)
