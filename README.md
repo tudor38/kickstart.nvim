@@ -97,7 +97,7 @@ Leader is `<Space>`. Press it and wait to see which-key's menu; `<leader>sk` sea
 | `<leader>h…`        | Git hunks: `hs` stage, `hr` reset, `hp` preview, `hb` blame, `hd` diff |
 | `]c` / `[c`         | Next / previous git hunk                                             |
 | `<leader>lg`        | LazyGit                                                              |
-| `<leader>d…`        | Debug: `dh` breakpoint, `dc` terminate, `dn` run to cursor; `<M-h/j/k/l>` continue/over/out/into, `<F7>` UI |
+| `<leader>d…`        | Debug: `db` breakpoint, `dx` terminate, `dC` run to cursor; `<M-h/j/k/l>` continue/over/out/into, `<F7>` UI |
 | `<leader>t…`        | Toggles: `th` inlay hints, `tb` line blame, `tm` math preview        |
 | `<leader>i…`        | Insert: `it` timestamp, `ii` image from clipboard                    |
 | `<leader>y…`        | Yank: `yp` file path                                                 |
