@@ -93,12 +93,30 @@ vim.diagnostic.config {
 -- Language servers to install and enable. Keys are nvim-lspconfig names (`:help lspconfig-all`);
 -- values are merged into that server's default config.
 local servers = {
-  basedpyright = {},
+  basedpyright = {
+    settings = {
+      basedpyright = {
+        analysis = {
+          -- basedpyright defaults to 'recommended' (flags every Any/Unknown, typing.List, etc.);
+          -- 'standard' is plain pyright's default: real type errors only. Projects can override it.
+          typeCheckingMode = 'standard',
+        },
+      },
+    },
+  },
   ruff = {
     -- Lint/fix only; leave hover to basedpyright
     on_attach = function(client)
       client.server_capabilities.hoverProvider = false
     end,
+    init_options = {
+      settings = {
+        -- Without a project ruff config, lint only for likely bugs (ruff's classic defaults:
+        -- pycodestyle errors + pyflakes), not style or modernization. Project configs win.
+        configurationPreference = 'filesystemFirst',
+        lint = { select = { 'E4', 'E7', 'E9', 'F' } },
+      },
+    },
   },
   -- Default filetype lists include ones Neovim doesn't define (gotmpl, markdown.mdx),
   -- which :checkhealth flags
