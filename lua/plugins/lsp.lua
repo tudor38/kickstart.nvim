@@ -90,6 +90,16 @@ return {
       -- Language servers to install and enable. Keys are nvim-lspconfig names (`:help lspconfig-all`);
       -- values are merged into that server's default config.
       local servers = {
+        basedpyright = {},
+        ruff = {
+          -- Lint/fix only; leave hover to basedpyright
+          on_attach = function(client)
+            client.server_capabilities.hoverProvider = false
+          end,
+        },
+        gopls = {},
+        ts_ls = {},
+        marksman = {},
         lua_ls = {
           settings = {
             Lua = {
@@ -100,7 +110,7 @@ return {
       }
 
       -- Non-LSP tools for mason to install (formatters, etc.)
-      local tools = { 'stylua', 'prettier' }
+      local tools = { 'stylua', 'prettier', 'goimports' }
 
       require('mason-tool-installer').setup { ensure_installed = vim.list_extend(vim.tbl_keys(servers), tools) }
 
