@@ -18,6 +18,16 @@ require('lazydev').setup {
 require('mason').setup()
 require('fidget').setup {} -- LSP status updates
 
+-- Hover docs hide Markdown syntax (`\[` escapes, `&lt;`, fences) via 'conceallevel', but Neovim sets
+-- 'concealcursor' to '' so the raw text reappears on the cursor line once you enter the float with K.
+-- Keep it hidden in Normal mode too.
+local open_floating_preview = vim.lsp.util.open_floating_preview
+vim.lsp.util.open_floating_preview = function(...)
+  local bufnr, winnr = open_floating_preview(...)
+  if vim.wo[winnr].conceallevel > 0 then vim.wo[winnr].concealcursor = 'n' end
+  return bufnr, winnr
+end
+
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
   callback = function(event)
