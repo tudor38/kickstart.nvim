@@ -2,9 +2,9 @@
 
 My personal Neovim configuration. It started as a fork of
 [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) and has since diverged: it is split into
-modules, keeps [lazy.nvim](https://github.com/folke/lazy.nvim) and nvim-cmp, and targets **Neovim 0.12**.
+modules, uses [lazy.nvim](https://github.com/folke/lazy.nvim) and blink.cmp, and targets **Neovim 0.12**.
 
-Upstream kickstart has since moved to Neovim 0.12's built-in `vim.pack` and blink.cmp; migrating is
+Upstream kickstart has since moved to Neovim 0.12's built-in `vim.pack`; migrating is
 tracked in [#1](https://github.com/tudor38/kickstart.nvim/issues/1).
 
 ## Requirements
@@ -37,7 +37,7 @@ lua/config/
   lazy.lua               lazy.nvim bootstrap; imports every file in lua/plugins/
 lua/plugins/
   colorscheme.lua        onedark
-  completion.lua         nvim-cmp + LuaSnip
+  completion.lua         blink.cmp + LuaSnip
   debug.lua              nvim-dap + dap-ui (Go, Python)
   editor.lua             which-key, mini.nvim, leap, outline, todo-comments, vim-sleuth
   format.lua             conform.nvim (format on save)

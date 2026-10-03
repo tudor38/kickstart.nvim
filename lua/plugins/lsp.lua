@@ -17,7 +17,6 @@ return {
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       { 'j-hui/fidget.nvim', opts = {} }, -- LSP status updates
-      'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -116,8 +115,6 @@ return {
 
       require('mason-tool-installer').setup { ensure_installed = vim.list_extend(vim.tbl_keys(servers), tools) }
 
-      -- Broadcast nvim-cmp's extra completion capabilities to every server
-      vim.lsp.config('*', { capabilities = require('cmp_nvim_lsp').default_capabilities() })
       for name, config in pairs(servers) do
         vim.lsp.config(name, config)
       end

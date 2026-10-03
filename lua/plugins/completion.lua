@@ -1,63 +1,50 @@
 return {
-  {
-    'hrsh7th/nvim-cmp',
-    event = 'InsertEnter',
-    dependencies = {
-      {
-        'L3MON4D3/LuaSnip',
-        build = (function()
-          -- Regex support in snippets needs make (not available on Windows by default)
-          if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
-            return
-          end
-          return 'make install_jsregexp'
-        end)(),
-      },
-      'saadparwaiz1/cmp_luasnip',
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-nvim-lsp-signature-help',
-    },
-    config = function()
-      local cmp = require 'cmp'
-      local luasnip = require 'luasnip'
-      luasnip.config.setup {}
+  { -- Snippet engine
+    'L3MON4D3/LuaSnip',
+    version = '2.*',
+    build = (function()
+      -- Regex support in snippets needs make (not available on Windows by default)
+      if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
+        return
+      end
+      return 'make install_jsregexp'
+    end)(),
+    opts = {},
+  },
 
-      cmp.setup {
-        snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
+  { -- Autocompletion. LSP capabilities are registered automatically on Neovim 0.11+.
+    'saghen/blink.cmp',
+    version = '1.*', -- release tags ship the prebuilt Rust fuzzy matcher
+    -- Not lazy-loaded: its LSP capabilities must be registered before servers start (it lazy-loads internally)
+    dependencies = { 'L3MON4D3/LuaSnip', 'folke/lazydev.nvim' },
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      keymap = {
+        -- 'default' is close to built-in completion (`:help ins-completion`):
+        -- <C-y> accept, <C-Space> open menu/docs, <C-n>/<C-p> select, <C-b>/<C-f> scroll docs,
+        -- <C-e> hide, <C-k> toggle signature help, <Tab>/<S-Tab> jump through snippet placeholders
+        preset = 'default',
+        -- Also jump through snippet placeholders with <C-l>/<C-h>
+        ['<C-l>'] = { 'snippet_forward', 'fallback' },
+        ['<C-h>'] = { 'snippet_backward', 'fallback' },
+      },
+      appearance = { nerd_font_variant = 'mono' },
+      completion = {
+        -- Preselect the first item without inserting it (like completeopt=noinsert)
+        list = { selection = { preselect = true, auto_insert = false } },
+        documentation = { auto_show = true, auto_show_delay_ms = 200 },
+      },
+      sources = {
+        default = { 'lazydev', 'lsp', 'path', 'snippets' },
+        providers = {
+          -- Neovim API completions in Lua files; ranked above LuaLS
+          lazydev = { name = 'LazyDev', module = 'lazydev.integrations.blink', score_offset = 100 },
         },
-        completion = { completeopt = 'menu,menuone,noinsert' },
-        -- See `:help ins-completion` for why these keys
-        mapping = cmp.mapping.preset.insert {
-          ['<C-n>'] = cmp.mapping.select_next_item(),
-          ['<C-p>'] = cmp.mapping.select_prev_item(),
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-y>'] = cmp.mapping.confirm { select = true },
-          ['<C-Space>'] = cmp.mapping.complete {},
-          -- Move forward/backward through snippet placeholders
-          ['<C-l>'] = cmp.mapping(function()
-            if luasnip.expand_or_locally_jumpable() then
-              luasnip.expand_or_jump()
-            end
-          end, { 'i', 's' }),
-          ['<C-h>'] = cmp.mapping(function()
-            if luasnip.locally_jumpable(-1) then
-              luasnip.jump(-1)
-            end
-          end, { 'i', 's' }),
-        },
-        sources = {
-          { name = 'lazydev', group_index = 0 }, -- group 0 skips LuaLS completions where lazydev applies
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-          { name = 'path' },
-          { name = 'nvim_lsp_signature_help' },
-        },
-      }
-    end,
+      },
+      snippets = { preset = 'luasnip' },
+      fuzzy = { implementation = 'prefer_rust_with_warning' },
+      signature = { enabled = true }, -- signature help while typing arguments
+    },
   },
 }
