@@ -1,30 +1,20 @@
-return {
-  { -- Prompt local LLMs through Ollama
-    'David-Kunz/gen.nvim',
-    cmd = 'Gen',
-    keys = {
-      { '<leader>g', ':Gen<CR>', mode = { 'n', 'x' }, desc = '[G]en: prompt LLM' },
-    },
-    config = function()
-      require('gen').model = 'gemma3n'
-    end,
-  },
+local gh = require('config.pack').gh
 
-  'mattn/emmet-vim', -- HTML/CSS abbreviation expansion
+vim.pack.add {
+  gh 'David-Kunz/gen.nvim', -- prompt local LLMs through Ollama
+  gh 'mattn/emmet-vim', -- HTML/CSS abbreviation expansion
+  { src = gh 'mikesmithgh/kitty-scrollback.nvim', version = vim.version.range '4' }, -- open kitty's scrollback in Neovim
+}
 
-  { -- Open kitty's scrollback in Neovim
-    'mikesmithgh/kitty-scrollback.nvim',
-    cmd = { 'KittyScrollbackGenerateKittens', 'KittyScrollbackCheckHealth' },
-    event = { 'User KittyScrollbackLaunch' },
-    version = '^4.0.0', -- pin major version
-    opts = {
-      search = {
-        callbacks = {
-          after_ready = function()
-            vim.api.nvim_feedkeys('?', 'n', false)
-          end,
-        },
-      },
+require('gen').model = 'gemma3n'
+vim.keymap.set({ 'n', 'x' }, '<leader>g', ':Gen<CR>', { desc = '[G]en: prompt LLM' })
+
+require('kitty-scrollback').setup {
+  search = {
+    callbacks = {
+      after_ready = function()
+        vim.api.nvim_feedkeys('?', 'n', false)
+      end,
     },
   },
 }

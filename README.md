@@ -2,10 +2,8 @@
 
 My personal Neovim configuration. It started as a fork of
 [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) and has since diverged: it is split into
-modules, uses [lazy.nvim](https://github.com/folke/lazy.nvim) and blink.cmp, and targets **Neovim 0.12**.
-
-Upstream kickstart has since moved to Neovim 0.12's built-in `vim.pack`; migrating is
-tracked in [#1](https://github.com/tudor38/kickstart.nvim/issues/1).
+modules, manages plugins with Neovim's built-in [`vim.pack`](https://neovim.io/doc/user/pack.html#vim.pack),
+uses blink.cmp for completion, and targets **Neovim 0.12**.
 
 ## Requirements
 
@@ -23,7 +21,7 @@ tracked in [#1](https://github.com/tudor38/kickstart.nvim/issues/1).
 
 ```sh
 git clone git@github.com:tudor38/kickstart.nvim.git ~/.config/nvim
-nvim  # lazy.nvim bootstraps itself and installs plugins; mason installs servers and formatters
+nvim  # vim.pack asks to install plugins (at the revisions in nvim-pack-lock.json); mason installs servers and formatters
 ```
 
 ## Layout
@@ -34,7 +32,7 @@ lua/config/
   options.lua            editor options
   keymaps.lua            general keymaps (plugin keymaps live with their plugin)
   autocmds.lua           yank highlight, <leader>x run-file
-  lazy.lua               lazy.nvim bootstrap; imports every file in lua/plugins/
+  pack.lua               vim.pack build hooks, :PackUpdate / :PackClean
 lua/plugins/
   colorscheme.lua        onedark
   completion.lua         blink.cmp + LuaSnip
@@ -50,7 +48,24 @@ lua/plugins/
   treesitter.lua         parsers, highlighting, indent
 ```
 
-To add a plugin, add a spec to the matching file in `lua/plugins/` (or a new file there).
+`lua/config/pack.lua` lists the plugin modules in load order; telescope and debug load right after startup.
+
+## Plugins
+
+Each module in `lua/plugins/` calls `vim.pack.add()` and then configures its plugins. To add one, add it to
+the matching module (or a new module listed in `init.lua`). Plugins are installed to
+`~/.local/share/nvim/site/pack/core/opt/`, and their exact revisions are pinned in `nvim-pack-lock.json`
+(committed).
+
+| Command                 | What                                                                  |
+| ----------------------- | --------------------------------------------------------------------- |
+| `:PackUpdate [names]`   | Fetch updates and show them; `:write` applies, `:quit` discards       |
+| `:PackClean`            | Delete plugins that were removed from the config                      |
+| `:checkhealth vim.pack` | Plugin manager status                                                 |
+
+Build steps (telescope-fzf-native, LuaSnip regex, mdmath's npm install, `:TSUpdate`) run on install/update
+from `lua/config/pack.lua`. To roll back an update: `git checkout HEAD -- nvim-pack-lock.json`, `:restart`,
+then `:lua vim.pack.update(nil, { offline = true, target = 'lockfile' })`.
 
 ## Languages
 

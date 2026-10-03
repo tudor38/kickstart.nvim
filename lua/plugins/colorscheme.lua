@@ -1,10 +1,4 @@
-return {
-  {
-    'navarasu/onedark.nvim',
-    lazy = false,
-    priority = 1000, -- load before other start plugins
-    config = function()
-      vim.cmd.colorscheme 'onedark'
-    end,
-  },
-}
+local gh = require('config.pack').gh
+
+vim.pack.add { gh 'navarasu/onedark.nvim' }
+vim.cmd.colorscheme 'onedark'
