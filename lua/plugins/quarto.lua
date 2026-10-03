@@ -59,8 +59,8 @@ return {
       local function set_terminal()
         vim.fn.call('slime#config', {})
       end
-      vim.keymap.set('n', '<leader>cm', mark_terminal, { desc = '[m]ark terminal' })
-      vim.keymap.set('n', '<leader>cs', set_terminal, { desc = '[s]et terminal' })
+      vim.keymap.set('n', '<leader>rm', mark_terminal, { desc = 'REPL: [M]ark terminal' })
+      vim.keymap.set('n', '<leader>rs', set_terminal, { desc = 'REPL: [S]et terminal' })
     end,
   },
 
@@ -98,7 +98,7 @@ return {
   { -- preview equations
     'jbyuki/nabla.nvim',
     keys = {
-      { '<leader>qm', ':lua require"nabla".toggle_virt()<cr>', desc = 'toggle [m]ath equations' },
+      { '<leader>tm', function() require('nabla').toggle_virt() end, desc = '[T]oggle [M]ath preview' },
     },
   },
 

@@ -90,11 +90,11 @@ return {
     vim.keymap.set('n', '<Leader>df', function()
       local widgets = require('dap.ui.widgets')
       widgets.centered_float(widgets.frames)
-    end)
+    end, { desc = 'DAPUI: Frames' })
     vim.keymap.set('n', '<Leader>ds', function()
       local widgets = require('dap.ui.widgets')
       widgets.centered_float(widgets.scopes)
-    end)
+    end, { desc = 'DAPUI: Scopes' })
 
     -- REPL Autocompletion
     vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {

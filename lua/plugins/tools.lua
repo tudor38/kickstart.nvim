@@ -1,6 +1,10 @@
 return {
   { -- Prompt local LLMs through Ollama
     'David-Kunz/gen.nvim',
+    cmd = 'Gen',
+    keys = {
+      { '<leader>g', ':Gen<CR>', mode = { 'n', 'x' }, desc = '[G]en: prompt LLM' },
+    },
     config = function()
       require('gen').model = 'gemma3n'
     end,

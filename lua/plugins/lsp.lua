@@ -28,15 +28,17 @@ return {
           end
           local builtin = require 'telescope.builtin'
 
+          -- Built-in `gr` prefix (`:help lsp-defaults`); grn/gra are Neovim's own defaults.
+          -- Lists go through Telescope pickers.
           map('gd', builtin.lsp_definitions, '[G]oto [D]efinition')
-          map('gr', builtin.lsp_references, '[G]oto [R]eferences')
-          map('gI', builtin.lsp_implementations, '[G]oto [I]mplementation')
-          map('<leader>D', builtin.lsp_type_definitions, 'Type [D]efinition')
-          map('<leader>ds', builtin.lsp_document_symbols, '[D]ocument [S]ymbols')
-          map('<leader>ws', builtin.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-          map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+          map('grd', builtin.lsp_definitions, '[G]oto [D]efinition')
+          map('grr', builtin.lsp_references, '[G]oto [R]eferences')
+          map('gri', builtin.lsp_implementations, '[G]oto [I]mplementation')
+          map('grt', builtin.lsp_type_definitions, '[G]oto [T]ype definition')
+          map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          map('gO', builtin.lsp_document_symbols, 'Open document symbols')
+          map('gW', builtin.lsp_dynamic_workspace_symbols, 'Open workspace symbols')
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
-          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
 
