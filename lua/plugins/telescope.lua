@@ -3,7 +3,7 @@ local gh = require('config.pack').gh
 -- Fuzzy finder (files, lsp, etc). Inside a picker, <C-/> (insert) or ? (normal) lists its keymaps.
 local plugins = {
   gh 'nvim-lua/plenary.nvim',
-  { src = gh 'nvim-telescope/telescope.nvim', version = '0.1.x' },
+  gh 'nvim-telescope/telescope.nvim', -- default branch; 0.1.x uses APIs removed in Neovim 0.12
   gh 'nvim-telescope/telescope-ui-select.nvim',
 }
 if vim.fn.executable 'make' == 1 then

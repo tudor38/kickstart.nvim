@@ -24,18 +24,23 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local map = function(keys, func, desc, mode)
       vim.keymap.set(mode or 'n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
     end
-    local builtin = require 'telescope.builtin'
+    -- Telescope loads just after startup, possibly after a server attaches: resolve pickers on use
+    local picker = function(name)
+      return function()
+        require('telescope.builtin')[name]()
+      end
+    end
 
     -- Built-in `gr` prefix (`:help lsp-defaults`); grn/gra are Neovim's own defaults.
     -- Lists go through Telescope pickers.
-    map('gd', builtin.lsp_definitions, '[G]oto [D]efinition')
-    map('grd', builtin.lsp_definitions, '[G]oto [D]efinition')
-    map('grr', builtin.lsp_references, '[G]oto [R]eferences')
-    map('gri', builtin.lsp_implementations, '[G]oto [I]mplementation')
-    map('grt', builtin.lsp_type_definitions, '[G]oto [T]ype definition')
+    map('gd', picker 'lsp_definitions', '[G]oto [D]efinition')
+    map('grd', picker 'lsp_definitions', '[G]oto [D]efinition')
+    map('grr', picker 'lsp_references', '[G]oto [R]eferences')
+    map('gri', picker 'lsp_implementations', '[G]oto [I]mplementation')
+    map('grt', picker 'lsp_type_definitions', '[G]oto [T]ype definition')
     map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-    map('gO', builtin.lsp_document_symbols, 'Open document symbols')
-    map('gW', builtin.lsp_dynamic_workspace_symbols, 'Open workspace symbols')
+    map('gO', picker 'lsp_document_symbols', 'Open document symbols')
+    map('gW', picker 'lsp_dynamic_workspace_symbols', 'Open workspace symbols')
     map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
 
     local client = vim.lsp.get_client_by_id(event.data.client_id)
