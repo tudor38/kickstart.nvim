@@ -98,7 +98,7 @@ return {
       }
 
       -- Non-LSP tools for mason to install (formatters, etc.)
-      local tools = { 'stylua' }
+      local tools = { 'stylua', 'prettier' }
 
       require('mason-tool-installer').setup { ensure_installed = vim.list_extend(vim.tbl_keys(servers), tools) }
 
