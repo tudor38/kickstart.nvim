@@ -11,10 +11,11 @@ require('luasnip').setup {}
 
 require('blink.cmp').setup {
   keymap = {
-    -- 'default' is close to built-in completion (`:help ins-completion`):
-    -- <C-y> accept, <C-Space> open menu/docs, <C-n>/<C-p> select, <C-b>/<C-f> scroll docs,
-    -- <C-e> hide, <C-k> toggle signature help, <Tab>/<S-Tab> jump through snippet placeholders
-    preset = 'default',
+    -- 'super-tab': <Tab> accepts (or jumps to the next snippet placeholder, or inserts a tab),
+    -- <S-Tab> jumps back. <C-Space> open menu/docs, <C-n>/<C-p> select, <C-b>/<C-f> scroll docs,
+    -- <C-e> hide, <C-k> toggle signature help
+    preset = 'super-tab',
+    ['<C-y>'] = { 'select_and_accept', 'fallback' }, -- keep the built-in-style accept too
     -- Also jump through snippet placeholders with <C-l>/<C-h>
     ['<C-l>'] = { 'snippet_forward', 'fallback' },
     ['<C-h>'] = { 'snippet_backward', 'fallback' },

@@ -111,6 +111,7 @@ Leader is `<Space>`. Press it and wait to see which-key's menu; `<leader>sk` sea
 | `<leader>vv`        | Edit config                                                          |
 | `<C-h/j/k/l>`       | Move between windows                                                 |
 | `jk`                | Escape (insert mode)                                                 |
+| `<Tab>` / `<C-y>`  | Accept completion (Tab also jumps snippet placeholders / indents)    |
 | `<F3>`              | Show last search's matches in a new window                           |
 
 Text editing comes from mini.nvim: `sa`/`sd`/`sr` surround, extended `a`/`i` textobjects (`aa`/`ii` for
