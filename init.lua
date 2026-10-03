@@ -717,19 +717,15 @@ require('lazy').setup({
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+      -- mason-lspconfig v2: configure via vim.lsp.config and only enable the servers listed above
+      -- (otherwise it auto-enables every mason package that has an LSP mode, e.g. stylua).
+      vim.lsp.config('*', { capabilities = capabilities })
+      for name, config in pairs(servers) do
+        vim.lsp.config(name, config)
+      end
       require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart poplates installs via mason-tool-installer)
-        automatic_installation = false,
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
+        ensure_installed = {},
+        automatic_enable = vim.tbl_keys(servers),
       }
     end,
   },
@@ -955,7 +951,6 @@ require('lazy').setup({
       --  Check out: https://github.com/echasnovski/mini.nvim
       require('mini.files').setup()
       require('mini.pairs').setup()
-      require('mini.comment').setup { mappings = { comment = 'gcc', comment_line = 'gcc', textobject = '' } }
       -- require('mini.jump2d').setup()
     end,
   },
@@ -1037,10 +1032,10 @@ require('lazy').setup({
 -- vim: ts=2 sts=2 sw=2 et
 
 -- my custom
-require('render-markdown').setup { latex = { enabled = false } }
 vim.opt.relativenumber = true
 vim.opt.foldmethod = 'expr'
-vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.opt.foldlevel = 99
 vim.o.cursorline = true
 -- vim.o.ls = 0  -- last status
 -- vim.o.ch = 0  -- command height
@@ -1069,7 +1064,6 @@ vim.keymap.set('n', '<leader>ti', [[:put =strftime('%Y-%m-%d %H:%M:%S')<cr>A ]],
 -- save
 vim.keymap.set('n', '<leader>w', ':w<CR>', { noremap = true, silent = true, desc = '[W]rite File' })
 
-vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
 
 -- -- navigate quickfix list
 -- vim.keymap.set('n', '<M-j>', ':cnext<CR>', { noremap = true, silent = true, desc = 'quickfix next item' })
@@ -1080,6 +1074,4 @@ vim.keymap.set('n', '<leader>cp', ':let @"=expand("%:p")<CR>', { noremap = true,
 -- navigate files
 vim.keymap.set('n', '<leader>n', ':lua MiniFiles.open()<CR>', { desc = 'Open file Navigation' })
 
-local python = '$HOME/.pyenv/versions/neovim/bin/python'
-vim.g.python_host_prog = python
-vim.g.python3_host_prog = python
+vim.g.loaded_python3_provider = 0

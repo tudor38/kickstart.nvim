@@ -1,16 +1,14 @@
--- -- run file as a script depending on file type
-vim.cmd [[
-  augroup filetype_keymap
-    autocmd!
-    autocmd FileType python nmap <leader>x :w<CR>:exec "!python3" shellescape(expand(@%, 1))<CR>
-    autocmd FileType javascript nmap <leader>x :w<CR>:exec "!node" shellescape(expand(@%, 1))<CR>
-  augroup END
-]]
+-- Run the current file as a script (buffer-local so it doesn't leak to other filetypes)
+local runners = { python = 'python3', javascript = 'node' }
+vim.api.nvim_create_autocmd('FileType', {
+  group = vim.api.nvim_create_augroup('run-file', { clear = true }),
+  pattern = vim.tbl_keys(runners),
+  callback = function(event)
+    vim.keymap.set('n', '<leader>x', function()
+      vim.cmd.write()
+      vim.cmd('!' .. runners[vim.bo[event.buf].filetype] .. ' ' .. vim.fn.shellescape(vim.api.nvim_buf_get_name(event.buf)))
+    end, { buffer = event.buf, desc = 'E[x]ecute file' })
+  end,
+})
 
-return {
-  --   'tpope/vim-repeat',
-  --   -- 'tpope/vim-surround',
-  --   'tpope/vim-obsession',
-  --   'qpkorr/vim-renamer',
-  --   'Mofiqul/dracula.nvim',
-}
+return {}
