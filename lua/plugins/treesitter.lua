@@ -47,3 +47,22 @@ vim.api.nvim_create_autocmd('FileType', {
     end
   end,
 })
+
+-- Toggles all code coloring in the buffer: treesitter, LSP semantic tokens, and the legacy regex syntax (all three paint)
+vim.keymap.set('n', '<leader>tc', function()
+  local buf = vim.api.nvim_get_current_buf()
+  if vim.treesitter.highlighter.active[buf] or vim.bo[buf].syntax ~= 'off' then
+    vim.treesitter.stop(buf)
+    vim.lsp.semantic_tokens.enable(false, { bufnr = buf })
+    vim.b[buf].syntax_before_toggle = vim.bo[buf].syntax
+    vim.bo[buf].syntax = 'off'
+  else
+    vim.treesitter.start(buf)
+    vim.lsp.semantic_tokens.enable(true, { bufnr = buf })
+    -- An empty value means regex syntax was never running; setting it would start it
+    local before = vim.b[buf].syntax_before_toggle
+    if before and before ~= '' then
+      vim.bo[buf].syntax = before
+    end
+  end
+end, { desc = '[T]oggle syntax [C]olors' })
