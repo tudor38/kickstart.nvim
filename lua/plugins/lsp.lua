@@ -97,9 +97,11 @@ return {
             client.server_capabilities.hoverProvider = false
           end,
         },
-        gopls = {},
+        -- Default filetype lists include ones Neovim doesn't define (gotmpl, markdown.mdx),
+        -- which :checkhealth flags
+        gopls = { filetypes = { 'go', 'gomod', 'gowork' } },
         ts_ls = {},
-        marksman = {},
+        marksman = { filetypes = { 'markdown' } },
         lua_ls = {
           settings = {
             Lua = {
