@@ -69,7 +69,15 @@ SUDO=
 step 'System packages'
 need_node=0
 have node || need_node=1
-if have apt-get; then
+# Skip the package manager (and sudo) when everything is already there, e.g. when re-running to sync
+missing=0
+for cmd in git curl tar unzip gzip make gcc rg fc-cache python3 node npm; do have "$cmd" || missing=1; done
+{ have fd || have fdfind; } || missing=1
+# Debian splits venv (with ensurepip, which mason's Python tools need) into python3-venv
+python3 -c 'import ensurepip' 2>/dev/null || missing=1
+if ((!missing)); then
+  info 'have them'
+elif have apt-get; then
   pkgs=(git curl tar unzip gzip make gcc ripgrep fd-find fontconfig python3 python3-venv python3-pip)
   ((need_node)) && pkgs+=(nodejs npm)
   $SUDO apt-get update -qq
