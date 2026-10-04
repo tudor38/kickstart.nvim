@@ -20,7 +20,9 @@ uses blink.cmp for completion, and targets **Neovim 0.12**.
 
 ## Install
 
-On a new Linux machine (apt, dnf, pacman or zypper), one command installs everything:
+To set up a whole machine (shell, terminals, CLI tools, toolchains and this config), use the
+[dotfiles](https://github.com/tudor38/dotfiles) bootstrap, which runs `install.sh` at the end. For just Neovim
+on a new Linux machine (apt, dnf, pacman or zypper), one command installs everything:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/tudor38/kickstart.nvim/master/install.sh | bash
