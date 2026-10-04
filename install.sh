@@ -81,7 +81,8 @@ elif have dnf; then
 elif have pacman; then
   pkgs=(git curl tar unzip gzip make gcc ripgrep fd fontconfig python python-pip)
   ((need_node)) && pkgs+=(nodejs npm)
-  $SUDO pacman -Sy --needed --noconfirm "${pkgs[@]}" >/dev/null
+  # -Syu, not -Sy: refreshing without upgrading is a partial upgrade, which Arch doesn't support
+  $SUDO pacman -Syu --needed --noconfirm "${pkgs[@]}" >/dev/null
 elif have zypper; then
   pkgs=(git curl tar unzip gzip make gcc ripgrep fd fontconfig python3 python3-pip)
   ((need_node)) && pkgs+=(nodejs npm)
