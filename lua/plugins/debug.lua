@@ -14,10 +14,11 @@ vim.pack.add {
 local dap = require 'dap'
 local dapui = require 'dapui'
 
+-- Debug adapters, as mason package names
+local adapters = { 'delve', 'debugpy' }
+require('config.mason').install(adapters)
 require('mason-nvim-dap').setup {
-  automatic_installation = true,
   handlers = {}, -- default setup for each installed adapter
-  ensure_installed = { 'delve', 'python' },
 }
 
 local map = vim.keymap.set
@@ -83,3 +84,9 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
 
 require('dap-go').setup()
 require('dap-python').test_runner = 'pytest'
+
+return {
+  ensure = function(timeout)
+    return require('config.mason').sync(adapters, timeout)
+  end,
+}

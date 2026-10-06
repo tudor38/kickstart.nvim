@@ -5,7 +5,6 @@ vim.pack.add {
   gh 'neovim/nvim-lspconfig',
   gh 'mason-org/mason.nvim',
   gh 'mason-org/mason-lspconfig.nvim',
-  gh 'WhoIsSethDaniel/mason-tool-installer.nvim',
   gh 'j-hui/fidget.nvim',
 }
 
@@ -147,10 +146,12 @@ local servers = {
   },
 }
 
--- Non-LSP tools for mason to install (formatters, etc.)
-local tools = { 'stylua', 'prettier', 'goimports' }
-
-require('mason-tool-installer').setup { ensure_installed = vim.list_extend(vim.tbl_keys(servers), tools) }
+-- Mason package names for the servers above (e.g. ts_ls is typescript-language-server)
+local to_package = require('mason-lspconfig').get_mappings().lspconfig_to_package
+local packages = vim.tbl_map(function(name)
+  return to_package[name] or name
+end, vim.tbl_keys(servers))
+require('config.mason').install(packages)
 
 for name, config in pairs(servers) do
   vim.lsp.config(name, config)
@@ -162,4 +163,16 @@ require('mason-lspconfig').setup {
   automatic_enable = vim.tbl_keys(servers),
 }
 
-return { tools = tools } -- for scripts/sync.lua
+return {
+  ensure = function(timeout)
+    local missing = require('config.mason').sync(packages, timeout)
+    -- Every server that's enabled must be able to start
+    for _, config in ipairs(vim.lsp.get_configs { enabled = true }) do
+      local cmd = config.cmd
+      if type(cmd) == 'table' and vim.fn.executable(cmd[1]) == 0 then
+        table.insert(missing, ('server %s (%s not found)'):format(config.name, cmd[1]))
+      end
+    end
+    return missing
+  end,
+}

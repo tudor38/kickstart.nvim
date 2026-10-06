@@ -87,4 +87,19 @@ vim.keymap.set('n', '<leader>tp', function()
   vim.diagnostic.enable(enable)
 end, { desc = '[T]oggle [P]lain view (colors + diagnostics)' })
 
-return { parsers = parsers } -- for scripts/sync.lua
+return {
+  ensure = function(timeout)
+    -- Joins the install already started above
+    ts.install(parsers):wait(timeout)
+    local installed = ts.get_installed 'parsers'
+    return vim
+      .iter(parsers)
+      :filter(function(lang)
+        return not vim.list_contains(installed, lang)
+      end)
+      :map(function(lang)
+        return 'parser ' .. lang
+      end)
+      :totable()
+  end,
+}

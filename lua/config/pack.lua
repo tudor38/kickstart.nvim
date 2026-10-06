@@ -6,7 +6,10 @@
 
 local M = {}
 
--- Plugin modules (lua/plugins/<name>.lua), in load order. `deferred` ones load right after startup.
+-- Topic modules (lua/plugins/<name>.lua), in load order. `deferred` ones load right after startup.
+-- A topic that needs things beyond its plugins (parsers, mason packages) returns
+--   { ensure = fun(timeout_ms: integer): string[] }
+-- which installs them, waits, and lists what is still missing ('parser go'); scripts/sync.lua calls it.
 M.modules = {
   startup = {
     'colorscheme', -- first, so everything else draws with it
@@ -29,12 +32,45 @@ function M.load(names)
   end
 end
 
+-- Everything still missing for the loaded plugins and every topic's `ensure`, as labels
+---@param timeout integer ms
+---@param log fun(msg: string)
+---@return string[] missing
+function M.ensure(timeout, log)
+  local missing = {} ---@type string[]
+  local function check(label, ensure)
+    local m = ensure(timeout)
+    log(('%s: %s'):format(label, #m == 0 and 'ok' or (#m .. ' missing')))
+    vim.list_extend(missing, m)
+  end
+  check('plugins', function()
+    return vim
+      .iter(vim.pack.get())
+      :filter(function(p)
+        return not vim.uv.fs_stat(p.path)
+      end)
+      :map(function(p)
+        return 'plugin ' .. p.spec.name
+      end)
+      :totable()
+  end)
+  for _, name in ipairs(vim.list_extend(vim.list_slice(M.modules.startup), M.modules.deferred)) do
+    local topic = require('plugins.' .. name)
+    if type(topic) == 'table' and topic.ensure then
+      check(name, topic.ensure)
+    end
+  end
+  return missing
+end
+
 function M.gh(repo)
   return 'https://github.com/' .. repo
 end
 
 -- Build steps that lazy.nvim used to run (`build = ...`). Registered before any vim.pack.add()
--- so they also run on first install.
+-- so they also run on first install. They live here, keyed by name, rather than in each topic's
+-- spec `data`: on a fresh machine the first vim.pack.add() installs every plugin in the lockfile,
+-- before the topics that would carry that `data` have run.
 local function run(name, cmd, cwd)
   local result = vim.system(cmd, { cwd = cwd }):wait()
   if result.code ~= 0 then
