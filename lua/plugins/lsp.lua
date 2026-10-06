@@ -100,6 +100,11 @@ vim.diagnostic.config {
   virtual_text = { source = 'if_many', spacing = 2 },
 }
 
+-- Hides/shows diagnostics from every server (text, signs, underlines) in all buffers
+vim.keymap.set('n', '<leader>td', function()
+  vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end, { desc = '[T]oggle [D]iagnostics' })
+
 -- Language servers to install and enable. Keys are nvim-lspconfig names (`:help lspconfig-all`);
 -- values are merged into that server's default config.
 local servers = {

@@ -48,15 +48,16 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
--- Toggles all code coloring in the buffer: treesitter, LSP semantic tokens, and the legacy regex syntax (all three paint)
-vim.keymap.set('n', '<leader>tc', function()
-  local buf = vim.api.nvim_get_current_buf()
-  if vim.treesitter.highlighter.active[buf] or vim.bo[buf].syntax ~= 'off' then
-    vim.treesitter.stop(buf)
-    vim.lsp.semantic_tokens.enable(false, { bufnr = buf })
-    vim.b[buf].syntax_before_toggle = vim.bo[buf].syntax
-    vim.bo[buf].syntax = 'off'
-  else
+-- Code coloring in a buffer comes from treesitter, LSP semantic tokens, and the legacy regex syntax (all three paint)
+local function colors_enabled(buf)
+  return vim.treesitter.highlighter.active[buf] ~= nil or vim.bo[buf].syntax ~= 'off'
+end
+
+local function set_colors(buf, enable)
+  if enable == colors_enabled(buf) then
+    return
+  end
+  if enable then
     vim.treesitter.start(buf)
     vim.lsp.semantic_tokens.enable(true, { bufnr = buf })
     -- An empty value means regex syntax was never running; setting it would start it
@@ -64,7 +65,26 @@ vim.keymap.set('n', '<leader>tc', function()
     if before and before ~= '' then
       vim.bo[buf].syntax = before
     end
+  else
+    -- Save first: stopping treesitter re-enables regex syntax via the FileType autocmd
+    vim.b[buf].syntax_before_toggle = vim.bo[buf].syntax
+    vim.treesitter.stop(buf)
+    vim.lsp.semantic_tokens.enable(false, { bufnr = buf })
+    vim.bo[buf].syntax = 'off'
   end
+end
+
+vim.keymap.set('n', '<leader>tc', function()
+  local buf = vim.api.nvim_get_current_buf()
+  set_colors(buf, not colors_enabled(buf))
 end, { desc = '[T]oggle syntax [C]olors' })
+
+-- Colors (this buffer) plus diagnostics (all buffers, see <leader>td). If either is on, both go off
+vim.keymap.set('n', '<leader>tp', function()
+  local buf = vim.api.nvim_get_current_buf()
+  local enable = not (colors_enabled(buf) or vim.diagnostic.is_enabled())
+  set_colors(buf, enable)
+  vim.diagnostic.enable(enable)
+end, { desc = '[T]oggle [P]lain view (colors + diagnostics)' })
 
 return { parsers = parsers } -- for scripts/sync.lua
